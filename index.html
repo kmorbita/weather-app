@@ -6,68 +6,222 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K-Weather App</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 </head>
 
-<body>
+<body onload="pageLoad()">
+    <script src="custom.js"></script>
     <div class="header">
         <h2>K-Weather App</h2>
-        <input type="text" id="search" placeholder="Search City...">
+        <input type="text" id="search" placeholder="Search City..." onkeyup="getInput(event)">
         <div class="header-btn">
-            <div>
+            <!-- <div>
                 <button type="button">Dark</button>
+            </div> -->
+            <div class="temperature-scales-btn" id="celsius" onclick="tempScaleFunction('celsius')">
+                <img class="temperature-scales" src="/images/celsius.png" alt="celsius">
+                <span class="temp-text">Celsius</span>
             </div>
-            <div>
-                <button type="button">Celsius</button>
+            <div class="temperature-scales-btn" id="fahrenheit" onclick="tempScaleFunction('fahrenheit')">
+                <img class="temperature-scales" src="/images/fahrenheit.png" alt="celsius">
+                <span class="temp-text">Fahrenheit</span>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="card">
-             <div class="card-title">
+            <div class="card-title">
                 <h3>Today</h3>
-                <h1 class="location-title">Panabo, Philippines</h1>
-             </div>
-             <div class="icon-image">
-                <img src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-512.png" style="width: 250px;height: 250px;" alt="sample weather image">
-             </div>
-             <div class="card-body">
-                <h1 class="today-temp">13.5 &degC</h1>
+                <h1 class="location-title"><span id="place-title"></span></h1>
+            </div>
+            <div class="icon-image">
+                <img id="weather-image" style="width: 250px;height: 250px;" alt="weather image">
+            </div>
+            <div class="card-body">
+                <h1 class="today-temp"><span id="main-temp"></span></h1>
                 <h2 class="weather-desc">Overcast Clouds</h2>
-             </div>
-             <div class="card-sub-content">
+            </div>
+            <div class="card-sub-content">
                 <div class="row-one">
-                    <div>
-                        <h3>Feels Like</h3>
-                        <p>12.5 C</p>
+                    <div class="today-details-width">
+                        <div class="today-flex-image">
+                            <img class="today-image" src="/images/feels_like.png" alt="">
+                            <h3>Feels Like</h3>
+                        </div>
+                        <p><span id="feels-like"></span></p>
                     </div>
-                    <div>
-                        <h3>Wind Speed</h3>
-                        <p>12.5 C</p>
+                    <div class="today-details-width">
+                        <div class="today-flex-image">
+                            <img class="today-image" src="/images/wind.png" alt="">
+                            <h3>Wind Speed(m/s)</h3>
+                        </div>
+                        <p><span id="wind-speed"></span></p>
                     </div>
                 </div>
                 <div class="row-two">
-                    <div>
-                        <h3>Visibility</h3>
-                        <p>12.5 C</p>
+                    <div class="today-details-width">
+                        <div class="today-flex-image">
+                            <img class="today-image" src="/images/visibility.png" alt="">
+                            <h3>Visibility(m)</h3>
+                        </div>
+                        <p><span id="visibility"></span></p>
                     </div>
-                    <div>
-                        <h3>Humidity</h3>
-                        <p>12.5 C</p>
+                    <div class="today-details-width">
+                        <div class="today-flex-image">
+                            <img class="today-image" src="/images/humidity.png" alt="">
+                            <h3>Humidity(%)</h3>
+                        </div>
+                        <p><span id="humidity"></span></p>
                     </div>
                 </div>
-             </div>
+            </div>
         </div>
         <div class="col-2">
             <div class="details">
                 <h1 class="detail-title">today details</h1>
-                <div class="today-tile">
-
+                <div class="tiles">
+                    <div class="today-tile">
+                        <h3 class="tile-title">Sunrise</h3>
+                        <div style="width: 100%;text-align: center;">
+                            <img src="/images/sunrise.png" class="tile-image" alt="">
+                            <p class="tile-value"><span id="sunrise"></span></p>
+                        </div>
+                    </div>
+                    <div class="today-tile">
+                        <h3 class="tile-title">Sunset</h3>
+                        <div style="width: 100%;text-align: center;">
+                            <img src="/images/sunset.png" class="tile-image" alt="">
+                            <p class="tile-value"><span id="sunset"></span></p>
+                        </div>
+                    </div>
+                    <div class="today-tile">
+                        <h3 class="tile-title">Highest Temperature</h3>
+                        <div style="width: 100%;text-align: center;">
+                            <img src="/images/high-temperature.png" class="tile-image" alt="">
+                            <p class="tile-value"><span id="max-temp"></span></p>
+                        </div>
+                    </div>
+                    <div class="today-tile">
+                        <h3 class="tile-title">Lowest Temperature</h3>
+                        <div style="width: 100%;text-align: center;">
+                            <img src="/images/low-temperature.png" class="tile-image" alt="">
+                            <p class="tile-value"><span id="min-temp"></span></p>
+                        </div>
+                    </div>
+                    <div class="today-tile">
+                        <h3 class="tile-title">atm Ground Level (hPa)</h3>
+                        <div style="width: 100%;text-align: center;">
+                            <img src="/images/ground-level.png" class="tile-image" alt="">
+                            <p class="tile-value"><span id="ground-level"></span></p>
+                        </div>
+                    </div>
+                    <div class="today-tile">
+                        <h3 class="tile-title">atm Sea Level (hPa)</h3>
+                        <div style="width: 100%;text-align: center;">
+                            <img src="/images/sea-level.png" class="tile-image" alt="">
+                            <p class="tile-value"><span id="sea-level"></span></p>
+                        </div>
+                    </div>
+                    <div class="today-tile">
+                        <h3 class="tile-title">Wind Gust(m/s)</h3>
+                        <div style="width: 100%;text-align: center;">
+                            <img src="/images/wind_gust.png" class="tile-image" alt="">
+                            <p class="tile-value"><span id="wind-gust"></span></p>
+                        </div>
+                    </div>
+                    <div class="today-tile">
+                        <h3 class="tile-title">Wind Deg.</h3>
+                        <div style="width: 100%;text-align: center;">
+                            <img src="/images/wind _deg.png" class="tile-image" alt="">
+                            <p class="tile-value"><span id="wind-deg"></span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- <div class="weekly">
-                <h1>Weekly forecast</h1>
-            </div> -->
+            <div class="weekly">
+                <h1 class="weekly-title">Weekly forecast</h1>
+                <div class="weekly-tiles">
+                    <div class="tile">
+                        <div class="weekly-tile-title-group">
+                            <h1 class="weekly-tile-title">Sunday</h1>
+                            <h3 class="weekly-tile-subtitle">November 1st</h3>
+                        </div>
+                        <div style="width: 100%;text-align: center;margin-top: 40px;">
+                            <img src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-512.png"
+                                class="weekly-tile-image" alt="">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <p class="tile-value">30.7&degC</p>
+                        </div>
+                    </div>
+                    <div class="tile">
+                        <div class="weekly-tile-title-group">
+                            <h1 class="weekly-tile-title">Monday</h1>
+                            <h3 class="weekly-tile-subtitle">November 2nd</h3>
+                        </div>
+                        <div style="width: 100%;text-align: center;margin-top: 40px;">
+                            <img src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-512.png"
+                                class="weekly-tile-image" alt="">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <p class="tile-value">30.7&degC</p>
+                        </div>
+                    </div>
+                    <div class="tile">
+                        <div class="weekly-tile-title-group">
+                            <h1 class="weekly-tile-title">Tuesday</h1>
+                            <h3 class="weekly-tile-subtitle">November 3rd</h3>
+                        </div>
+                        <div style="width: 100%;text-align: center;margin-top: 40px;">
+                            <img src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-512.png"
+                                class="weekly-tile-image" alt="">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <p class="tile-value">30.7&degC</p>
+                        </div>
+                    </div>
+                    <div class="tile">
+                        <div class="weekly-tile-title-group">
+                            <h1 class="weekly-tile-title">Wednesday</h1>
+                            <h3 class="weekly-tile-subtitle">November 4th</h3>
+                        </div>
+                        <div style="width: 100%;text-align: center;margin-top: 40px;">
+                            <img src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-512.png"
+                                class="weekly-tile-image" alt="">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <p class="tile-value">30.7&degC</p>
+                        </div>
+                    </div>
+                    <div class="tile">
+                        <div class="weekly-tile-title-group">
+                            <h1 class="weekly-tile-title">Thursday</h1>
+                            <h3 class="weekly-tile-subtitle">November 5th</h3>
+                        </div>
+                        <div style="width: 100%;text-align: center;margin-top: 40px;">
+                            <img src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-512.png"
+                                class="weekly-tile-image" alt="">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <p class="tile-value">30.7&degC</p>
+                        </div>
+                    </div>
+                    <div class="tile">
+                        <div class="weekly-tile-title-group">
+                            <h1 class="weekly-tile-title">Friday</h1>
+                            <h3 class="weekly-tile-subtitle">November 6th</h3>
+                        </div>
+                        <div style="width: 100%;text-align: center;margin-top: 40px;">
+                            <img src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-512.png"
+                                class="weekly-tile-image" alt="">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <p class="tile-value">30.7&degC</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

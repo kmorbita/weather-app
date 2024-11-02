@@ -11,10 +11,17 @@ function pageLoad() {
         document.getElementById("celsius").classList.add("active");
         document.getElementById("fahrenheit").classList.remove("active");
     }
-    let data = localStorage.getItem("weather");
-    if (data !== undefined && data !== null) {
-        displayData(JSON.parse(data));
-    }else {
+    let dataToday = localStorage.getItem("weather");
+    if (dataToday !== undefined && dataToday !== null) {
+        displayData(JSON.parse(dataToday));
+    } else {
+        fetchData(defaultCity);
+    }
+    let dataWeekly = localStorage.getItem("weekly");
+    if (dataWeekly !== undefined && dataWeekly !== null) {
+        let tempDataWeekly = JSON.parse(dataWeekly)
+        processWeeklyData(tempDataWeekly.list);
+    } else {
         fetchData(defaultCity);
     }
 }
@@ -24,6 +31,7 @@ function getInput(event) {
         let search = document.getElementById("search");
         if (search.value.trim() !== undefined && search.value.trim() !== null && search.value.trim() !== "") {
             fetchData(capitalizeWords(search.value.trim()));
+            fetchDataWeekly(capitalizeWords(search.value.trim()));
         } else {
             alert("Please search a city.");
         }
@@ -52,6 +60,22 @@ async function fetchData(city) {
     }
 }
 
+async function fetchDataWeekly(city) {
+    let path = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${key}`;
+    try {
+        let response = await fetch(path);
+        if (!response.ok) {
+            throw new Error("Network response is not ok.");
+        }
+        const data = await response.json();
+        localStorage.setItem("weekly", JSON.stringify(data));
+        await processWeeklyData(data.list);
+    } catch (error) {
+        console.error("There was a problem in fetch operation: ", error);
+        alert(`The city "${city}" inputted is not valid. Please try another city.`);
+    }
+}
+
 async function findCountryByCode(code) {
     try {
         let response = await fetch("countries.json");
@@ -60,7 +84,7 @@ async function findCountryByCode(code) {
         }
         let countries = await response.json();
         let country = countries.find(country => country.code == code.toUpperCase());
-        return country ? country.country: "Country not found.";
+        return country ? country.country : "Country not found.";
     } catch (error) {
         console.error("There was a problem in finding the country.");
     }
@@ -74,16 +98,65 @@ async function findImageByCode(code) {
         }
         let images = await response.json();
         let image = images.find(image => image.code == code);
-        return image ? image.path: "/images/no-image.png";
+        return image ? image.path : "/images/no-image.png";
     } catch (error) {
         console.error("There was a problem in finding the weather image.");
     }
 }
 
+async function processWeeklyData(data) {
+    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let time3AM = "03:00:00";
+    let time12PM = "12:00:00";
+    let d = new Date();
+    let date = new Date(d);
+    let i = 1;
+    let html = "";
+    while (i <= 5) {
+        date.setDate(d.getDate() + i);
+        let newDate = `${date.getFullYear()}-${date.getMonth() + 1}-${padZeros(date.getDate())}`;
+        let newDateTime3am = `${date.getFullYear()}-${date.getMonth() + 1}-${padZeros(date.getDate())} ${time3AM}`;
+        let newDateTime12pm = `${date.getFullYear()}-${date.getMonth() + 1}-${padZeros(date.getDate())} ${time12PM}`;
+        let weeklyData = data.find(dat => dat.dt_txt == newDateTime12pm);
+        if (weeklyData === undefined) {
+            weeklyData = data.find(dat => dat.dt_txt == newDateTime3am);
+        }
+        html += await displayWeeklyData(weeklyData, days[date.getDay()], newDate);
+        i++;
+    }
+    document.getElementById("weekly").innerHTML = html;
+}
+
+function padZeros(date) {
+    date = date.toString();
+    date = date.padStart(2, "0");
+    return date;
+}
+
+async function displayWeeklyData(data, day, date) {
+    // console.log(data);
+    let weather_image = await findImageByCode(data.weather[0].id);
+    // let weather_image = "https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-512.png";
+    let txt = `<div class="tile">`;
+    txt += `<div class="weekly-tile-title-group">`;
+    txt += `<h1 class="weekly-tile-title">${day}</h1>`;
+    txt += `<h3 class="weekly-tile-subtitle">${date}</h3>`;
+    txt += `</div>`;
+    txt += `<div style="width: 100%;text-align: center;margin-top: 40px;">`;
+    txt += `<img src="${weather_image}" class="weekly-tile-image" alt="">`;
+    txt += `</div>`;
+    txt += `<div style="margin-bottom: 10px;">`;
+    txt += `<p class="tile-value">${autoConvertTemp(data.main.temp)}</p>`;
+    txt += `</div>`;
+    txt += `</div>`;
+    return txt;
+}
+
 async function displayData(data) {
     let country = await findCountryByCode(data.sys.country);
     let weather_image = await findImageByCode(data.weather[0].id);
-    let main_temp = data !== undefined && data !== null ? autoConvertTemp(data.main.temp).toString(): "d";
+    let main_temp = data !== undefined && data !== null ? autoConvertTemp(data.main.temp).toString() : "d";
+    let weather_desc = capitalizeWords(data.weather[0].description);
     let feels_like = autoConvertTemp(data.main.feels_like);
     let max_temp = autoConvertTemp(data.main.temp_max);
     let min_temp = autoConvertTemp(data.main.temp_min);
@@ -97,9 +170,10 @@ async function displayData(data) {
     let wind_gust = data.wind.gust;
     let wind_deg = data.wind.deg;
     let place_title = `${capitalizeWords(data.name)}, ${country}`
-    
+
 
     document.getElementById("main-temp").innerHTML = main_temp;
+    document.getElementById("main-weather-desc").innerHTML = weather_desc;
     document.getElementById("feels-like").innerHTML = feels_like;
     document.getElementById("max-temp").innerHTML = max_temp;
     document.getElementById("min-temp").innerHTML = min_temp;
@@ -129,10 +203,23 @@ function tempScaleFunction(event) {
             document.getElementById("fahrenheit").classList.add("active");
             document.getElementById("celsius").classList.remove("active");
         }
-        let data = localStorage.getItem("weather");
-        if (data !== undefined && data !== null) {
-            displayData(JSON.parse(data));
-        }
+        getWeatherForcastData();
+    }
+}
+
+function getWeatherForcastData() {
+    let dataToday = localStorage.getItem("weather");
+    if (dataToday !== undefined && dataToday !== null) {
+        displayData(JSON.parse(dataToday));
+    } else {
+        fetchData(defaultCity);
+    }
+    let dataWeekly = localStorage.getItem("weekly");
+    if (dataWeekly !== undefined && dataWeekly !== null) {
+        let tempDataWeekly = JSON.parse(dataWeekly)
+        processWeeklyData(tempDataWeekly.list);
+    } else {
+        fetchDataWeekly(defaultCity);
     }
 }
 
@@ -166,6 +253,11 @@ function convertUtcToPhilippineTime(utcTimestamp) {
     return date.toLocaleString('en-PH', options);
 }
 
+
+function togglemenu() {
+    let classList = document.getElementById("nav-list");
+    classList.classList.toggle("active");
+}
 
 
 

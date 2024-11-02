@@ -12,23 +12,30 @@
 
 <body onload="pageLoad()">
     <script src="custom.js"></script>
-    <div class="header">
-        <h2>K-Weather App</h2>
-        <input type="text" id="search" placeholder="Search City..." onkeyup="getInput(event)">
-        <div class="header-btn">
-            <!-- <div>
-                <button type="button">Dark</button>
-            </div> -->
-            <div class="temperature-scales-btn" id="celsius" onclick="tempScaleFunction('celsius')">
-                <img class="temperature-scales" src="/images/celsius.png" alt="celsius">
-                <span class="temp-text">Celsius</span>
-            </div>
-            <div class="temperature-scales-btn" id="fahrenheit" onclick="tempScaleFunction('fahrenheit')">
-                <img class="temperature-scales" src="/images/fahrenheit.png" alt="celsius">
-                <span class="temp-text">Fahrenheit</span>
+    <nav class="header">
+        <h2 class="title">K-Weather App</h2>
+        <a href="javascript:void(0);" class="burger-menu" onclick="togglemenu()">
+            <span class="burger-bar"></span>
+            <span class="burger-bar"></span>
+            <span class="burger-bar"></span>
+        </a>
+        <div class="nav-options" id="nav-list">
+            <input type="text" id="search" placeholder="Search City..." onkeyup="getInput(event)">
+            <div class="header-btn">
+                <div class="temperature-scales-btn" id="celsius" onclick="tempScaleFunction('celsius')">
+                    <img class="temperature-scales" src="/images/celsius.png" alt="celsius">
+                    <span class="temp-text">Celsius</span>
+                </div>
+                <div class="temperature-scales-btn" id="fahrenheit" onclick="tempScaleFunction('fahrenheit')">
+                    <img class="temperature-scales" src="/images/fahrenheit.png" alt="celsius">
+                    <span class="temp-text">Fahrenheit</span>
+                </div>
             </div>
         </div>
-    </div>
+        <div>
+            <h2 class="title">K-Weather App</h2>
+        </div>
+    </nav>
     <div class="container">
         <div class="card">
             <div class="card-title">
@@ -40,7 +47,7 @@
             </div>
             <div class="card-body">
                 <h1 class="today-temp"><span id="main-temp"></span></h1>
-                <h2 class="weather-desc">Overcast Clouds</h2>
+                <h2 class="weather-desc"><span id="main-weather-desc"></span></h2>
             </div>
             <div class="card-sub-content">
                 <div class="row-one">
@@ -141,8 +148,8 @@
             </div>
             <div class="weekly">
                 <h1 class="weekly-title">Weekly forecast</h1>
-                <div class="weekly-tiles">
-                    <div class="tile">
+                <div class="weekly-tiles" id="weekly">
+                    <!-- <div class="tile">
                         <div class="weekly-tile-title-group">
                             <h1 class="weekly-tile-title">Sunday</h1>
                             <h3 class="weekly-tile-subtitle">November 1st</h3>
@@ -219,7 +226,7 @@
                         <div style="margin-bottom: 10px;">
                             <p class="tile-value">30.7&degC</p>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

@@ -19,7 +19,8 @@ body {
     background-color: var(--yel);
     color: var(--blu);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     position: fixed;
     width: 100%;
     z-index: 1;
@@ -30,6 +31,34 @@ body {
     flex-direction: row;
     gap: 10px;
 }
+
+.nav-options {
+    display: none;
+}
+
+.nav-options.active {
+    display: block;
+}
+
+.burger-menu {
+    display: block;
+    cursor: pointer;
+}
+
+.burger-bar {
+    width: 25px;
+    background-color: #000;
+    height: 2px;
+    display: block;
+    margin: 5px 5px 5px auto;
+}
+
+.title {
+    margin-left: 5px;
+}
+
+
+
 
 .container {
     display: flex;
@@ -92,7 +121,7 @@ body {
 }
 
 .row-two {
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .col-2 {
@@ -258,11 +287,20 @@ body {
 
     .header {
         display: flex;
-        flex-direction: row;
         justify-content: space-between;
         align-items: center;
         padding: 10px;
         box-shadow: 2px 2px 2px #000;
+    }
+
+    .burger-menu {
+        display: none;
+    }
+
+    .nav-options {
+        display: inline-flex;
+        justify-content: space-between;
+        width: 60%;
     }
 
     .card {

@@ -28,7 +28,20 @@ function pageLoad() {
 
 function getInput(event) {
     if (event.key == "Enter") {
-        let search = document.getElementById("search");
+        // let search = document.getElementById("search");
+        // if (search.value.trim() !== undefined && search.value.trim() !== null && search.value.trim() !== "") {
+        //     fetchData(capitalizeWords(search.value.trim()));
+        //     fetchDataWeekly(capitalizeWords(search.value.trim()));
+        // } else {
+        //     alert("Please search a city.");
+        // }
+        // search.value = "";
+        let search = "";
+        if (window.matchMedia("(max-width: 890px)").matches) {
+            search = document.getElementById("sidebar-search");
+        } else {
+            search = document.getElementById("search");
+        }
         if (search.value.trim() !== undefined && search.value.trim() !== null && search.value.trim() !== "") {
             fetchData(capitalizeWords(search.value.trim()));
             fetchDataWeekly(capitalizeWords(search.value.trim()));
@@ -197,11 +210,15 @@ function tempScaleFunction(event) {
         if (event == "celsius") {
             localStorage.setItem("temperature", "celsius");
             document.getElementById("celsius").classList.add("active");
+            document.getElementById("sidebar-celsius").classList.add("active");
             document.getElementById("fahrenheit").classList.remove("active");
+            document.getElementById("sidebar-fahrenheit").classList.remove("active");
         } else {
             localStorage.setItem("temperature", "fahrenheit");
             document.getElementById("fahrenheit").classList.add("active");
+            document.getElementById("sidebar-fahrenheit").classList.add("active");
             document.getElementById("celsius").classList.remove("active");
+            document.getElementById("sidebar-celsius").classList.remove("active");
         }
         getWeatherForcastData();
     }
@@ -259,7 +276,20 @@ function togglemenu() {
     classList.classList.toggle("active");
 }
 
+function showSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+    sidebar.style.display = "flex";
+}
 
+function hideSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+    sidebar.style.display = "none";
+}
+
+function sample() {
+    const sidebar = document.querySelector(".sidebar");
+    sidebar.style.display = "none";
+}
 
 
 function convertToCelsius(kelvin) {

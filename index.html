@@ -12,7 +12,7 @@
 
 <body onload="pageLoad()">
     <script src="custom.js"></script>
-    <nav class="header">
+    <!-- <nav class="header">
         <h2 class="title">K-Weather App</h2>
         <a href="javascript:void(0);" class="burger-menu" onclick="togglemenu()">
             <span class="burger-bar"></span>
@@ -32,11 +32,49 @@
                 </div>
             </div>
         </div>
-        <div>
-            <h2 class="title">K-Weather App</h2>
-        </div>
+    </nav> -->
+    <nav>
+        <ul>
+            <li>
+                <h2 class="title">K-Weather App</h2>
+            </li>
+            <li class="hideOnMobile"><input type="text" class="search" id="search" placeholder="Search City..." onkeyup="getInput(event)">
+            </li>
+            <li class="hideOnMobile temp-button">
+                <div class="temperature-scales-btn" id="celsius" onclick="tempScaleFunction('celsius')">
+                    <img class="temperature-scales" src="/images/celsius.png" alt="celsius">
+                    <span class="temp-text">Celsius</span>
+                </div>
+                <div class="temperature-scales-btn" id="fahrenheit" onclick="tempScaleFunction('fahrenheit')">
+                    <img class="temperature-scales" src="/images/fahrenheit.png" alt="celsius">
+                    <span class="temp-text">Fahrenheit</span>
+                </div>
+            </li>
+            <li class="burger-menu" onclick=showSidebar()>
+                <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 96 960 960" width="26"><path d="M120 816v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>
+            </li>
+        </ul>
+        <ul class="sidebar">
+            <li onclick=hideSidebar()>
+                <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 96 960 960" width="26">
+                    <path
+                        d="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" />
+                </svg>
+            </li>
+            <li><input type="text" id="sidebar-search" placeholder="Search City..." onkeyup="getInput(event)"></li>
+            <li>
+                <div class="sidebar-temperature-scales-btn" id="sidebar-celsius" onclick="tempScaleFunction('celsius')">
+                    <img class="temperature-scales" src="/images/celsius.png" alt="celsius">
+                    <span class="temp-text">Celsius</span>
+                </div>
+                <div class="sidebar-temperature-scales-btn" id="sidebar-fahrenheit" onclick="tempScaleFunction('fahrenheit')">
+                    <img class="temperature-scales" src="/images/fahrenheit.png" alt="celsius">
+                    <span class="temp-text">Fahrenheit</span>
+                </div>
+            </li>
+        </ul>
     </nav>
-    <div class="container">
+    <div class="container" onclick=sample()>
         <div class="card">
             <div class="card-title">
                 <h3>Today</h3>

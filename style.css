@@ -13,9 +13,14 @@ body {
 * {
     box-sizing: border-box;
     margin: 0;
+    padding: 0;
 }
 
-.header {
+.hideOnMobile {
+    display: flex;
+}
+
+/* .header {
     background-color: var(--yel);
     color: var(--blu);
     display: flex;
@@ -51,13 +56,95 @@ body {
     height: 2px;
     display: block;
     margin: 5px 5px 5px auto;
+} */
+/* New header CSS */
+nav {
+    background-color: var(--yel);
+    box-shadow: 2px 2px 2px #000;
+    color: var(--blu);
+    position: fixed;
+    width: 100%;
 }
+nav ul {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    gap: 10px;
+    align-items: center;
+    height: 40px;
+}
+nav li {
+    display: flex;
+    padding: 0 10px;
+}
+nav li:first-child {
+    margin-right: auto;
+}
+
+nav .temp-button {
+    gap: 10px;
+}
+
+.hideOnMobile {
+    display: none;
+}
+
+.header {
+    color: var(--blu);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0px;
+    gap: 10px;
+    margin: 0 5px;
+}
+
+.header-btn {
+    display: inline-flex;
+    gap: 10px;
+}
+
+#search {
+    padding: 5px 10px;
+    border-radius: 100px;
+    width: 15rem;
+    margin-left: 100px;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width:  250px;
+    height: 100vh;
+    background-color: rgba(245, 208, 66, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: -2px 0px 2px #000000;
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    transition: 0.75s ease-out;
+}
+
+#sidebar-search {
+    padding: 5px 10px;
+    border-radius: 100px;
+    width: 15rem;
+}
+.burger-menu {
+    display: flex;
+    cursor: pointer;
+}
+
+/* New header CSS */
+
+
 
 .title {
     margin-left: 5px;
 }
-
-
 
 
 .container {
@@ -151,7 +238,6 @@ body {
 .today-image {
     width: 30px;
     height: 30px;
-    filter: invert(100%) brightness(100%);
 }
 
 .today-flex-image {
@@ -260,6 +346,27 @@ body {
     filter: invert(100%) brightness(100%);
 }
 
+.sidebar-temperature-scales-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--blu);
+    padding: 3px 6px;
+    border-radius: 7px;
+    cursor: pointer;
+    background-color: var(--yel);
+}
+
+.sidebar-temperature-scales-btn:hover {
+    background-color: var(--blu);
+    color: var(--yel);
+    box-shadow: 2px 2px 2px #000;
+}
+
+.sidebar-temperature-scales-btn:hover .temperature-scales {
+    filter: invert(100%) brightness(100%);
+}
+
 .temp-text {
     font-size: 15px;
     text-transform: uppercase;
@@ -276,6 +383,9 @@ body {
     filter: invert(100%) brightness(100%);
 }
 
+.active .sidebar-temperature-scales {
+    filter: invert(100%) brightness(100%);
+}
 
 
 
@@ -283,18 +393,34 @@ body {
 
 
 
-@media screen and (min-width: 890px) {
 
-    .header {
+@media (min-width: 890px) {
+
+    /* .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 10px;
         box-shadow: 2px 2px 2px #000;
+    } */
+    .sidebar {
+        display: none;
+        visibility: hidden;
+    }
+
+    nav {
+        position: fixed;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .hideOnMobile {
+        display: flex;
     }
 
     .burger-menu {
         display: none;
+        background-color: #000000;
     }
 
     .nav-options {
@@ -306,12 +432,6 @@ body {
     .card {
         width: 40%;
         position: fixed;
-    }
-
-    #search {
-        padding: 5px 10px;
-        border-radius: 100px;
-        width: 30%;
     }
 
     .container {
@@ -385,4 +505,10 @@ body {
         height: 230px;
     }
 
+}
+
+@media (max-width: 400px) {
+    .sidebar {
+        width: 100%;
+    }
 }
